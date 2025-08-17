@@ -4,6 +4,7 @@
     "builder": "NIXPACKS"
   },
   "deploy": {
+    "buildCommand": "npm ci && npm run build",
     "startCommand": "npm run db:migrate:prod && npm run start:prod",
     "healthcheckPath": "/healthz",
     "healthcheckTimeout": 300,

@@ -1,9 +1,7 @@
 import { Body, Controller, Get, Post, Param, Put } from '@nestjs/common';
-import { Pokemon } from 'generated/prisma';
 import { CreatePokemonDto } from './dto/create-pokemon.dto';
 import { PokemonService } from './pokemon.service';
 import { PokemonDto } from './dto/pokemon.dto';
-import { UpdatePokemonDto } from './dto/update-pokemon.dto';
 import { AbilityDto } from './dto/ability.dto';
 
 
