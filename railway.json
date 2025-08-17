@@ -4,9 +4,9 @@
     "builder": "NIXPACKS"
   },
   "deploy": {
-    "startCommand": "npm run db:migrate:deploy && npm run start:prod",
-    "healthcheckPath": "/",
-    "healthcheckTimeout": 100,
+    "startCommand": "npm run start:prod",
+    "healthcheckPath": "/pokemons",
+    "healthcheckTimeout": 300,
     "restartPolicyType": "ON_FAILURE",
     "restartPolicyMaxRetries": 10
   }
