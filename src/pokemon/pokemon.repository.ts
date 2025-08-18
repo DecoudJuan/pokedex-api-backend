@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { Prisma, Pokemon } from '@prisma/client';
 import { CreatePokemonDto } from './dto/create-pokemon.dto';
-import { UpdatePokemonDto } from './dto/update-pokemon.dto';
 
 type PokemonWithTrainer = Prisma.PokemonGetPayload<{ include: { trainer: true } }>;
 
@@ -32,10 +31,4 @@ export class PokemonRepository {
     return this.prisma.pokemon.findMany({ include: { trainer: true } });
   }
 
-  async update(id: string, data: UpdatePokemonDto): Promise<Pokemon> {
-    return this.prisma.pokemon.update({
-      where: { id },
-      data: { name: data.name, type: data.type, trainerId: data.trainerId },
-    });
-  }
 }

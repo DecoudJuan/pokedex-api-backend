@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { PokemonRepository } from './pokemon.repository';
 import { CreatePokemonDto } from './dto/create-pokemon.dto';
 import { PokemonDto } from './dto/pokemon.dto';
-import { UpdatePokemonDto } from './dto/update-pokemon.dto';
 import { AbilityDto } from './dto/ability.dto';
 import { plainToInstance } from 'class-transformer';
 
@@ -27,11 +26,6 @@ export class PokemonService {
 
   async getPokemonById(id: string): Promise<PokemonDto> {
     const pokemon = await this.pokemonRepository.findById(id);
-    return plainToInstance(PokemonDto, pokemon);
-  }
-
-  async updatePokemon(id: string, data: UpdatePokemonDto): Promise<PokemonDto> {
-    const pokemon = await this.pokemonRepository.update(id, data);
     return plainToInstance(PokemonDto, pokemon);
   }
 

@@ -14,4 +14,7 @@ export class PokemonDto {
 
   @Expose()
   trainer: PokemonTrainerDto | null;
+
+  @Expose()
+  imageUrl?: string;
 }

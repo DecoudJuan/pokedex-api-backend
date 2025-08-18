@@ -7,12 +7,10 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
 
   async onModuleInit() {
     try {
-      // No tiramos la app si la DB no está lista en boot; así /healthz responde 200
       await this.$connect();
       this.logger.log('Prisma connected');
     } catch (e) {
       this.logger.error('Prisma connect failed at boot; continuing', e as any);
-      // no throw -> la app levanta igual
     }
   }
 

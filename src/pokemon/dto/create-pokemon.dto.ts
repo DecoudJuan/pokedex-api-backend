@@ -1,11 +1,7 @@
-import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
+import { IsOptional, IsString } from 'class-validator';
 
 export class CreatePokemonDto {
-  @IsNotEmpty()
-  @IsString()
-  name: string;
-
-  @IsNotEmpty()
-  @IsString()
-  type: string;
+  @IsString() name: string;
+  @IsString() type: string;
+  @IsOptional() @IsString() imageUrl?: string; 
 }
