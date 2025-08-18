@@ -20,6 +20,7 @@ model Pokemon {
   type      String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  imageUrl  String?
   trainerId String?
 
   trainer   PokemonTrainer? @relation(fields: [trainerId], references: [id])
