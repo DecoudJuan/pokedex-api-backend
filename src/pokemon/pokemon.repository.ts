@@ -21,12 +21,16 @@ export class PokemonRepository {
     return this.prisma.pokemon.findFirst({ where: { name } });
   }
 
-  async create(data: CreatePokemonDto): Promise<Pokemon> {
+  async create(data: CreatePokemonDto) {
     return this.prisma.pokemon.create({
-      data: { name: data.name, type: data.type },
+      data: {
+        name: data.name,
+        type: data.type,
+        imageUrl: data.imageUrl ?? null, 
+      },
+      select: { id: true, name: true, type: true, imageUrl: true },
     });
   }
-
   async findAllWithTrainer(): Promise<PokemonWithTrainer[]> {
     return this.prisma.pokemon.findMany({ include: { trainer: true } });
   }
