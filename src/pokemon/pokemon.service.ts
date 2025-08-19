@@ -3,6 +3,7 @@ import { PokemonRepository } from './pokemon.repository';
 import { CreatePokemonDto } from './dto/create-pokemon.dto';
 import { PokemonDto } from './dto/pokemon.dto';
 import { plainToInstance } from 'class-transformer';
+import { UpdatePokemonDto } from './dto/update-pokemon.dto';
 
 @Injectable()
 export class PokemonService {
@@ -26,6 +27,14 @@ export class PokemonService {
     await this.pokemonRepository.deleteById(id);
   }
 
+  async updatePokemon(id: string, data: UpdatePokemonDto): Promise<PokemonDto> {
+    const existing = await this.pokemonRepository.findById(id);
+    if (!existing) {
+      throw new NotFoundException('Pokémon no encontrado');
+    }
+    const updated = await this.pokemonRepository.update(id, data);
+    return plainToInstance(PokemonDto, updated);
+  }
 
   async getAllPokemonsWithTrainer(): Promise<PokemonDto[]> {
     const pokemons = await this.pokemonRepository.findAllWithTrainer();

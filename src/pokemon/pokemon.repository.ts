@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { Prisma, Pokemon } from '@prisma/client';
 import { CreatePokemonDto } from './dto/create-pokemon.dto';
+import { UpdatePokemonDto } from './dto/update-pokemon.dto';
 
 type PokemonWithTrainer = Prisma.PokemonGetPayload<{ include: { trainer: true } }>;
 
@@ -31,6 +32,18 @@ export class PokemonRepository {
         name: data.name,
         type: data.type,
         imageUrl: data.imageUrl ?? null, 
+      },
+      select: { id: true, name: true, type: true, imageUrl: true },
+    });
+  }
+
+  async update(id: string, data: UpdatePokemonDto) {
+    return this.prisma.pokemon.update({
+      where: { id },
+      data: {
+        name: data.name,
+        type: data.type,
+        imageUrl: data.imageUrl ?? null,
       },
       select: { id: true, name: true, type: true, imageUrl: true },
     });
