@@ -14,6 +14,11 @@ export class PokemonController {
     return this.pokemonService.getAllPokemons();
   }
 
+  @Get(':id')
+  async getPokemonById(@Param('id') id: string): Promise<PokemonDto> {
+    return this.pokemonService.getPokemonById(id);
+  }
+
   @Post()
   async createPokemon(@Body() data: CreatePokemonDto): Promise<PokemonDto> {
     return this.pokemonService.createPokemon(data);
@@ -31,12 +36,6 @@ export class PokemonController {
     @Body() data: UpdatePokemonDto,
   ): Promise<PokemonDto> {
     return this.pokemonService.updatePokemon(id, data);
-  }
-
-
-  @Get(':id')
-  async getPokemonById(@Param('id') id: string): Promise<PokemonDto> {
-    return this.pokemonService.getPokemonById(id);
   }
 
 }
