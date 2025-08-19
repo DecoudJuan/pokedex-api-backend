@@ -13,6 +13,10 @@ export class PokemonRepository {
     return this.prisma.pokemon.findMany();
   }
 
+  async deleteById(id: string) {
+    return this.prisma.pokemon.delete({ where: { id } });
+  }
+
   async findById(id: string): Promise<Pokemon | null> {
     return this.prisma.pokemon.findUnique({ where: { id } });
   }
@@ -31,6 +35,7 @@ export class PokemonRepository {
       select: { id: true, name: true, type: true, imageUrl: true },
     });
   }
+
   async findAllWithTrainer(): Promise<PokemonWithTrainer[]> {
     return this.prisma.pokemon.findMany({ include: { trainer: true } });
   }

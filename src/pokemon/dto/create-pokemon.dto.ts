@@ -4,6 +4,6 @@ export class CreatePokemonDto {
   @IsString() name: string;
   @IsString() type: string;
   @IsOptional()
-  @IsUrl({ require_tld: false }) // admite urls locales también
+  @IsUrl({ require_tld: false }) 
   imageUrl?: string;
 }

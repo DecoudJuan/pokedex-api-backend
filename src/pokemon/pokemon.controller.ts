@@ -1,8 +1,7 @@
-import { Body, Controller, Get, Post, Param, Put } from '@nestjs/common';
+import { Body, Controller, Get, Post, Param, Put, Delete } from '@nestjs/common';
 import { CreatePokemonDto } from './dto/create-pokemon.dto';
 import { PokemonService } from './pokemon.service';
 import { PokemonDto } from './dto/pokemon.dto';
-import { AbilityDto } from './dto/ability.dto';
 
 
 @Controller('pokemons')
@@ -19,18 +18,15 @@ export class PokemonController {
     return this.pokemonService.createPokemon(data);
   }
 
+  @Delete(':id')
+  async deletePokemon(@Param('id') id: string): Promise<{ message: string }> {
+    await this.pokemonService.deletePokemon(id);
+    return { message: 'Pokémon eliminado' };
+  }
+
   @Get(':id')
   async getPokemonById(@Param('id') id: string): Promise<PokemonDto> {
     return this.pokemonService.getPokemonById(id);
   }
 
-  @Get(':id/abilities')
-  async getPokemonAbilities(@Param('id') id: string): Promise<AbilityDto[]> {
-    return this.pokemonService.getPokemonAbilities(id);
-  }
-
-  @Get('abilities')
-  async getAllAbilities(): Promise<AbilityDto[]> {
-    return this.pokemonService.getAllAbilities();
-  }
 }

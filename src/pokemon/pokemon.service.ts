@@ -1,8 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PokemonRepository } from './pokemon.repository';
 import { CreatePokemonDto } from './dto/create-pokemon.dto';
 import { PokemonDto } from './dto/pokemon.dto';
-import { AbilityDto } from './dto/ability.dto';
 import { plainToInstance } from 'class-transformer';
 
 @Injectable()
@@ -19,6 +18,15 @@ export class PokemonService {
     return plainToInstance(PokemonDto, pokemon);
   }
 
+  async deletePokemon(id: string): Promise<void> {
+    const existing = await this.pokemonRepository.findById(id);
+    if (!existing) {
+      throw new NotFoundException('Pokémon no encontrado');
+    }
+    await this.pokemonRepository.deleteById(id);
+  }
+
+
   async getAllPokemonsWithTrainer(): Promise<PokemonDto[]> {
     const pokemons = await this.pokemonRepository.findAllWithTrainer();
     return pokemons.map((pokemon) => plainToInstance(PokemonDto, pokemon));
@@ -29,20 +37,4 @@ export class PokemonService {
     return plainToInstance(PokemonDto, pokemon);
   }
 
-  async getPokemonAbilities(id: string): Promise<AbilityDto[]> {
-    // Mock implementation 
-    return [
-      { id: '1', name: 'Thunderbolt', description: 'Electric attack', power: 90 },
-      { id: '2', name: 'Quick Attack', description: 'Fast attack', power: 40 }
-    ];
-  }
-
-  async getAllAbilities(): Promise<AbilityDto[]> {
-    // Mock implementation 
-    return [
-      { id: '1', name: 'Thunderbolt', description: 'Electric attack', power: 90 },
-      { id: '2', name: 'Quick Attack', description: 'Fast attack', power: 40 },
-      { id: '3', name: 'Fire Blast', description: 'Fire attack', power: 110 }
-    ];
-  }
 }

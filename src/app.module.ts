@@ -3,10 +3,12 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { PokemonModule } from './pokemon/pokemon.module';
 import { HealthController } from './healthz/healthz.controller';
+import { AbilitiesModule } from './abilities/abilities.module';
+import { TrainerModule } from './trainer/trainer.module';
 
 
 @Module({
-  imports: [PokemonModule],
+  imports: [PokemonModule, AbilitiesModule, TrainerModule],
   controllers: [AppController, HealthController],
   providers: [AppService],
 })
