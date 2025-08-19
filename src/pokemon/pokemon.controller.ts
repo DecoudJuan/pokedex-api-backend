@@ -1,5 +1,6 @@
-import { Body, Controller, Get, Post, Param, Put, Delete } from '@nestjs/common';
+import { Body, Controller, Get, Post, Param, Put, Delete, ParseUUIDPipe } from '@nestjs/common';
 import { CreatePokemonDto } from './dto/create-pokemon.dto';
+import { UpdatePokemonDto } from './dto/update-pokemon.dto';
 import { PokemonService } from './pokemon.service';
 import { PokemonDto } from './dto/pokemon.dto';
 
@@ -23,6 +24,15 @@ export class PokemonController {
     await this.pokemonService.deletePokemon(id);
     return { message: 'Pokémon eliminado' };
   }
+
+  @Put(':id')
+  async updatePokemon(
+    @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
+    @Body() data: UpdatePokemonDto,
+  ): Promise<PokemonDto> {
+    return this.pokemonService.updatePokemon(id, data);
+  }
+
 
   @Get(':id')
   async getPokemonById(@Param('id') id: string): Promise<PokemonDto> {
