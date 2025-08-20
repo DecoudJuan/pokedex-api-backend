@@ -1,26 +1,48 @@
-import { Injectable } from '@nestjs/common';
-import { CreateTrainerDto } from './dto/create-trainer.dto';
-import { UpdateTrainerDto } from './dto/update-trainer.dto';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { PrismaService } from 'src/prisma.service';
+import { Prisma } from '@prisma/client';
+
+type ListParams = { page?: number; limit?: number; search?: string };
 
 @Injectable()
-export class TrainerService {
-  create(createTrainerDto: CreateTrainerDto) {
-    return 'This action adds a new trainer';
+export class TrainersService {
+  constructor(private prisma: PrismaService) {}
+
+  async findAll({ page = 1, limit = 12, search }: ListParams) {
+    const where: Prisma.PokemonTrainerWhereInput = search
+      ? { name: { contains: search, mode: 'insensitive' } }
+      : {};
+
+    return this.prisma.pokemonTrainer.findMany({
+      where,
+      skip: (page - 1) * limit,
+      take: limit,
+      orderBy: { name: 'asc' },
+
+    });
   }
 
-  findAll() {
-    return `This action returns all trainer`;
+  async findOne(id: string) {
+    const t = await this.prisma.pokemonTrainer.findUnique({ where: { id } });
+    if (!t) throw new NotFoundException('Entrenador no encontrado');
+    return t;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} trainer`;
+  create(data: { name: string; email: string; imageUrl?: string }) {
+    return this.prisma.pokemonTrainer.create({ data });
   }
 
-  update(id: number, updateTrainerDto: UpdateTrainerDto) {
-    return `This action updates a #${id} trainer`;
+  async update(id: string, data: { name?: string; email?: string; imageUrl?: string }) {
+    try {
+      return await this.prisma.pokemonTrainer.update({ where: { id }, data });
+    } catch {
+      throw new NotFoundException('Entrenador no encontrado');
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} trainer`;
+  async remove(id: string) {
+    await this.prisma.pokemonTrainer.delete({ where: { id } }).catch(() => {
+      throw new NotFoundException('Entrenador no encontrado');
+    });
   }
 }

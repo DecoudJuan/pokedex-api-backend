@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
-import { TrainerService } from './trainer.service';
-import { TrainerController } from './trainer.controller';
+import { TrainersController } from './trainer.controller';
+import { TrainersService } from './trainer.service';
+import { PrismaService } from 'src/prisma.service';
 
 @Module({
-  controllers: [TrainerController],
-  providers: [TrainerService],
+  controllers: [TrainersController],
+  providers: [TrainersService, PrismaService],
 })
-export class TrainerModule {}
+export class TrainersModule {}

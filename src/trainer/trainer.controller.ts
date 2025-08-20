@@ -1,34 +1,38 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { TrainerService } from './trainer.service';
+import { Controller, Get, Post, Put, Delete, Param, Body, Query } from '@nestjs/common';
+import { TrainersService } from './trainer.service';
 import { CreateTrainerDto } from './dto/create-trainer.dto';
 import { UpdateTrainerDto } from './dto/update-trainer.dto';
 
-@Controller('trainer')
-export class TrainerController {
-  constructor(private readonly trainerService: TrainerService) {}
-
-  @Post()
-  create(@Body() createTrainerDto: CreateTrainerDto) {
-    return this.trainerService.create(createTrainerDto);
-  }
+@Controller('trainers')
+export class TrainersController {
+  constructor(private readonly svc: TrainersService) {}
 
   @Get()
-  findAll() {
-    return this.trainerService.findAll();
+  findAll(
+    @Query('page') page = 1,
+    @Query('limit') limit = 12,
+    @Query('search') search?: string,
+  ) {
+    return this.svc.findAll({ page: +page, limit: +limit, search });
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.trainerService.findOne(+id);
+    return this.svc.findOne(id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTrainerDto: UpdateTrainerDto) {
-    return this.trainerService.update(+id, updateTrainerDto);
+  @Post()
+  create(@Body() dto: CreateTrainerDto) {
+    return this.svc.create(dto);
+  }
+
+  @Put(':id')
+  update(@Param('id') id: string, @Body() dto: UpdateTrainerDto) {
+    return this.svc.update(id, dto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.trainerService.remove(+id);
+    return this.svc.remove(id);
   }
 }
